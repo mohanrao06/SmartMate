@@ -194,7 +194,7 @@ with st.sidebar:
     
     # Manual Clear Button
     if st.button("🗑️ Delete Current Knowledge Base", use_container_width=True):
-        clear_vector_store("chroma-db")
+        clear_vector_store()
         st.session_state.vector_store = None
         st.session_state.current_source = None
         st.session_state.chunk_count = 0
@@ -263,7 +263,8 @@ if user_prompt := st.chat_input("Ask a question about the loaded content..."):
                 stream_gen, retrieved_docs = stream_query_rag(
                     query=user_prompt,
                     vector_store=st.session_state.vector_store,
-                    model_name=model_choice
+                    model_name=model_choice,
+                    chat_history=st.session_state.messages[:-1]
                 )
                 answer = st.write_stream(stream_gen)
                 

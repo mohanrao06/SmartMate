@@ -1,0 +1,182 @@
+import os
+import shutil
+import requests
+from typing import List, Tuple, Generator
+from bs4 import BeautifulSoup
+from dotenv import load_dotenv
+
+# Set offline mode for local cached huggingface embeddings to prevent network lookup timeouts
+os.environ["TRANSFORMERS_OFFLINE"] = "1"
+os.environ["HF_HUB_OFFLINE"] = "1"
+os.environ["USER_AGENT"] = "SmartMate/1.0"
+
+from langchain_core.documents import Document
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_community.document_loaders import PyPDFLoader, WebBaseLoader
+from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_community.vectorstores import Chroma
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_groq import ChatGroq
+
+env_path = os.path.join(os.path.dirname(__file__), ".env")
+load_dotenv(env_path)
+
+DEFAULT_DB_DIR = os.path.join(os.path.dirname(__file__), "chroma-db")
+
+# Singleton cached embedding model
+_EMBEDDING_MODEL = None
+
+def get_embedding_model():
+    """Returns the cached HuggingFace embedding model (BAAI/bge-small-en-v1.5)."""
+    global _EMBEDDING_MODEL
+    if _EMBEDDING_MODEL is None:
+        _EMBEDDING_MODEL = HuggingFaceEmbeddings(model_name="BAAI/bge-small-en-v1.5")
+    return _EMBEDDING_MODEL
+
+def clear_vector_store(persist_directory: str = DEFAULT_DB_DIR):
+    """
+    Completely deletes and cleans up the existing vector store collection
+    and files to save storage and ensure old embeddings are purged.
+    """
+    if os.path.exists(persist_directory):
+        try:
+            emb = get_embedding_model()
+            temp_db = Chroma(persist_directory=persist_directory, embedding_function=emb)
+            temp_db.delete_collection()
+        except Exception:
+            pass
+        
+        try:
+            shutil.rmtree(persist_directory, ignore_errors=True)
+        except Exception as e:
+            print(f"Directory cleanup warning: {e}")
+
+def load_documents_from_file(file_path: str, original_filename: str = "") -> List[Document]:
+    """Loads documents from a PDF or plain text file."""
+    ext = os.path.splitext(file_path)[1].lower()
+    if ext == ".pdf":
+        loader = PyPDFLoader(file_path)
+        docs = loader.load()
+    else:
+        with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
+            content = f.read()
+        docs = [Document(page_content=content, metadata={"source": original_filename or os.path.basename(file_path)})]
+    return docs
+
+def load_documents_from_url(url: str) -> List[Document]:
+    """Loads and extracts readable content from a given website URL with fallback."""
+    try:
+        loader = WebBaseLoader(url)
+        docs = loader.load()
+        if docs and docs[0].page_content.strip():
+            return docs
+    except Exception:
+        pass
+
+    # Robust fallback using requests + BeautifulSoup
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    }
+    resp = requests.get(url, headers=headers, timeout=10)
+    resp.raise_for_status()
+    
+    soup = BeautifulSoup(resp.text, "html.parser")
+    for script_or_style in soup(["script", "style", "noscript", "header", "footer", "nav"]):
+        script_or_style.decompose()
+        
+    text = soup.get_text(separator="\n", strip=True)
+    title = soup.title.string.strip() if soup.title and soup.title.string else url
+    return [Document(page_content=text, metadata={"source": title or url})]
+
+def load_documents_from_text(text: str, source_label: str = "Direct Text Input") -> List[Document]:
+    """Wraps raw user-entered text into a Document."""
+    return [Document(page_content=text, metadata={"source": source_label})]
+
+def build_vector_store(docs: List[Document], persist_directory: str = DEFAULT_DB_DIR) -> Tuple[Chroma, int]:
+    """
+    Deletes any existing vector database, chunks the new documents,
+    creates fresh embeddings, and saves into Chroma.
+    """
+    # 1. Purge previous database
+    clear_vector_store(persist_directory)
+
+    # 2. Split into chunks using project configuration
+    splitter = RecursiveCharacterTextSplitter(
+        chunk_size=1000,
+        chunk_overlap=200
+    )
+    chunks = splitter.split_documents(docs)
+    chunks = [c for c in chunks if c.page_content.strip()]
+    if not chunks:
+        raise ValueError("No readable text could be extracted from the provided source.")
+
+    # 3. Create fresh embeddings and store in Chroma
+    emb = get_embedding_model()
+    vector_store = Chroma.from_documents(
+        documents=chunks,
+        embedding=emb,
+        persist_directory=persist_directory
+    )
+    
+    return vector_store, len(chunks)
+
+def get_retriever(vector_store: Chroma):
+    """Returns the MMR retriever configured identically to main.py."""
+    return vector_store.as_retriever(
+        search_type="mmr",
+        search_kwargs={
+            "k": 4,
+            "fetch_k": 10,
+            "lambda_mult": 0.5
+        }
+    )
+
+def _build_prompt_and_context(query: str, vector_store: Chroma) -> Tuple[object, List[Document]]:
+    """Helper to retrieve MMR docs and construct the final prompt."""
+    retriever = get_retriever(vector_store)
+    docs = retriever.invoke(query)
+    
+    context = "\n\n".join([doc.page_content for doc in docs])
+    
+    prompt = ChatPromptTemplate.from_messages([
+        ("system",
+            """You are a helpful AI assistant.
+Use ONLY the provided context to answer the question.
+If the answer is not present in the context,
+say: "I could not find the answer in the document."
+"""
+        ),
+        ("human",
+            """Context:
+{context}
+
+Question:
+{question}
+"""
+        )
+    ])
+    
+    final_prompt = prompt.invoke({
+        "context": context,
+        "question": query
+    })
+    return final_prompt, docs
+
+def query_rag(query: str, vector_store: Chroma, model_name: str = "openai/gpt-oss-120b") -> Tuple[str, List[Document]]:
+    """Retrieves context using MMR and generates a complete answer using ChatGroq."""
+    final_prompt, docs = _build_prompt_and_context(query, vector_store)
+    llm = ChatGroq(model=model_name, temperature=0)
+    response = llm.invoke(final_prompt)
+    return response.content, docs
+
+def stream_query_rag(query: str, vector_store: Chroma, model_name: str = "openai/gpt-oss-120b") -> Tuple[Generator[str, None, None], List[Document]]:
+    """Retrieves context using MMR and yields tokens for live streaming in the UI."""
+    final_prompt, docs = _build_prompt_and_context(query, vector_store)
+    llm = ChatGroq(model=model_name, temperature=0)
+    
+    def token_generator():
+        for chunk in llm.stream(final_prompt):
+            if chunk.content:
+                yield chunk.content
+
+    return token_generator(), docs

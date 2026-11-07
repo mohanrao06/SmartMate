@@ -1,0 +1,274 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" width="100%" height="100%" style="background-color: #0B0F19; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F172A" />
+      <stop offset="100%" stop-color="#050811" />
+    </linearGradient>
+
+    <linearGradient id="cardGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E293B" />
+      <stop offset="100%" stop-color="#0F172A" />
+    </linearGradient>
+
+    <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38BDF8" />
+      <stop offset="100%" stop-color="#3B82F6" />
+    </linearGradient>
+
+    <linearGradient id="purpleGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#C084FC" />
+      <stop offset="100%" stop-color="#8B5CF6" />
+    </linearGradient>
+
+    <linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#34D399" />
+      <stop offset="100%" stop-color="#10B981" />
+    </linearGradient>
+
+    <linearGradient id="pinkGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#F472B6" />
+      <stop offset="100%" stop-color="#EC4899" />
+    </linearGradient>
+
+    <linearGradient id="amberGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FBBF24" />
+      <stop offset="100%" stop-color="#F59E0B" />
+    </linearGradient>
+
+    <linearGradient id="roseGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FB7185" />
+      <stop offset="100%" stop-color="#E11D48" />
+    </linearGradient>
+
+    <!-- Filters -->
+    <filter id="cardShadow" x="-10%" y="-10%" width="120%" height="125%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.5" />
+    </filter>
+
+    <filter id="glowBlue" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+
+    <!-- Marker Arrows -->
+    <marker id="arrowBlue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#38BDF8" />
+    </marker>
+
+    <marker id="arrowPurple" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#C084FC" />
+    </marker>
+
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#34D399" />
+    </marker>
+
+    <marker id="arrowPink" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#F472B6" />
+    </marker>
+
+    <marker id="arrowAmber" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#FBBF24" />
+    </marker>
+  </defs>
+
+  <!-- Canvas Background -->
+  <rect width="1200" height="700" fill="url(#bgGrad)" />
+
+  <!-- Subtle Grid Pattern -->
+  <g opacity="0.06">
+    <path d="M 0,100 L 1200,100 M 0,200 L 1200,200 M 0,300 L 1200,300 M 0,400 L 1200,400 M 0,500 L 1200,500 M 0,600 L 1200,600" stroke="#FFFFFF" stroke-width="1" />
+    <path d="M 150,0 L 150,700 M 300,0 L 300,700 M 450,0 L 450,700 M 600,0 L 600,700 M 750,0 L 750,700 M 900,0 L 900,700 M 1050,0 L 1050,700" stroke="#FFFFFF" stroke-width="1" />
+  </g>
+
+  <!-- Title & Subtitle Header -->
+  <text x="600" y="48" font-size="24" font-weight="800" fill="#F8FAFC" text-anchor="middle" letter-spacing="0.5">🧠 SmartMate End-to-End RAG Architecture</text>
+  <text x="600" y="74" font-size="13" fill="#94A3B8" text-anchor="middle">Interactive Ingestion • Storage-Safe Purge • MMR Vector Search • Grounded ChatGroq Generation</text>
+
+  <!-- ==================== STAGE 1: INGESTION ==================== -->
+  <g filter="url(#cardShadow)">
+    <rect x="40" y="110" width="220" height="230" rx="14" fill="url(#cardGrad1)" stroke="#38BDF8" stroke-width="1.5" stroke-opacity="0.6" />
+    <!-- Header Pill -->
+    <rect x="55" y="125" width="130" height="24" rx="12" fill="#0284C7" fill-opacity="0.3" stroke="#38BDF8" stroke-width="1" />
+    <text x="120" y="141" font-size="11" font-weight="700" fill="#38BDF8" text-anchor="middle">1. INPUT SOURCES</text>
+
+    <!-- Source Items -->
+    <g transform="translate(55, 165)">
+      <rect x="0" y="0" width="190" height="42" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1" />
+      <text x="15" y="26" font-size="16">📄</text>
+      <text x="45" y="21" font-size="12" font-weight="700" fill="#F1F5F9">PDF / TXT Files</text>
+      <text x="45" y="34" font-size="10" fill="#94A3B8">PyPDFLoader parser</text>
+    </g>
+
+    <g transform="translate(55, 217)">
+      <rect x="0" y="0" width="190" height="42" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1" />
+      <text x="15" y="26" font-size="16">🌐</text>
+      <text x="45" y="21" font-size="12" font-weight="700" fill="#F1F5F9">Website URLs</text>
+      <text x="45" y="34" font-size="10" fill="#94A3B8">WebBaseLoader + BS4</text>
+    </g>
+
+    <g transform="translate(55, 269)">
+      <rect x="0" y="0" width="190" height="42" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1" />
+      <text x="15" y="26" font-size="16">✍️</text>
+      <text x="45" y="21" font-size="12" font-weight="700" fill="#F1F5F9">Raw Text Notes</text>
+      <text x="45" y="34" font-size="10" fill="#94A3B8">Direct Text Ingestion</text>
+    </g>
+  </g>
+
+  <!-- Connecting Line 1 -> 2 -->
+  <path d="M 260,225 L 315,225" fill="none" stroke="#38BDF8" stroke-width="2.5" stroke-dasharray="4,4" marker-end="url(#arrowBlue)" />
+
+  <!-- ==================== STAGE 2: AUTO-PURGE ==================== -->
+  <g filter="url(#cardShadow)">
+    <rect x="325" y="110" width="195" height="230" rx="14" fill="url(#cardGrad1)" stroke="#FB7185" stroke-width="1.5" stroke-opacity="0.7" />
+    <rect x="340" y="125" width="140" height="24" rx="12" fill="#E11D48" fill-opacity="0.3" stroke="#FB7185" stroke-width="1" />
+    <text x="410" y="141" font-size="11" font-weight="700" fill="#FB7185" text-anchor="middle">2. STORAGE PURGE</text>
+
+    <!-- Shield Icon & Content -->
+    <circle cx="422" cy="195" r="28" fill="#E11D48" fill-opacity="0.2" stroke="#FB7185" stroke-width="1.5" />
+    <text x="422" y="202" font-size="24" text-anchor="middle">🛡️</text>
+
+    <text x="422" y="245" font-size="13" font-weight="700" fill="#F8FAFC" text-anchor="middle">Auto-Wipe Gate</text>
+    <text x="422" y="268" font-size="10.5" fill="#FDA4AF" text-anchor="middle">Deletes Old Chroma DB</text>
+    <text x="422" y="284" font-size="10.5" fill="#FDA4AF" text-anchor="middle">Zero Topic Bleed</text>
+    <text x="422" y="300" font-size="10.5" fill="#FDA4AF" text-anchor="middle">Conserves Disk Space</text>
+  </g>
+
+  <!-- Connecting Line 2 -> 3 -->
+  <path d="M 520,225 L 575,225" fill="none" stroke="#C084FC" stroke-width="2.5" marker-end="url(#arrowPurple)" />
+
+  <!-- ==================== STAGE 3: CHUNKING & EMBEDDING ==================== -->
+  <g filter="url(#cardShadow)">
+    <rect x="585" y="110" width="250" height="230" rx="14" fill="url(#cardGrad1)" stroke="#C084FC" stroke-width="1.5" stroke-opacity="0.6" />
+    <rect x="600" y="125" width="170" height="24" rx="12" fill="#9333EA" fill-opacity="0.3" stroke="#C084FC" stroke-width="1" />
+    <text x="685" y="141" font-size="11" font-weight="700" fill="#C084FC" text-anchor="middle">3. CHUNKING & EMBEDDING</text>
+
+    <!-- Chunking Box -->
+    <g transform="translate(600, 165)">
+      <rect x="0" y="0" width="220" height="64" rx="8" fill="#1E293B" stroke="#475569" stroke-width="1" />
+      <text x="15" y="25" font-size="15">✂️</text>
+      <text x="45" y="22" font-size="12" font-weight="700" fill="#F1F5F9">RecursiveCharacterSplitter</text>
+      <text x="45" y="38" font-size="10" fill="#CBD5E1">Chunk Size: 1000 tokens</text>
+      <text x="45" y="52" font-size="10" fill="#CBD5E1">Overlap: 200 tokens</text>
+    </g>
+
+    <!-- Embeddings Box -->
+    <g transform="translate(600, 245)">
+      <rect x="0" y="0" width="220" height="64" rx="8" fill="#1E293B" stroke="#475569" stroke-width="1" />
+      <text x="15" y="25" font-size="15">🧮</text>
+      <text x="45" y="22" font-size="12" font-weight="700" fill="#F1F5F9">HuggingFace Embeddings</text>
+      <text x="45" y="38" font-size="10" fill="#E2E8F0">Model: BAAI/bge-small-en</text>
+      <text x="45" y="52" font-size="10" fill="#94A3B8">384-dimensional dense vectors</text>
+    </g>
+  </g>
+
+  <!-- Connecting Line 3 -> 4 -->
+  <path d="M 835,225 L 890,225" fill="none" stroke="#FBBF24" stroke-width="2.5" marker-end="url(#arrowAmber)" />
+
+  <!-- ==================== STAGE 4: VECTOR DATABASE ==================== -->
+  <g filter="url(#cardShadow)">
+    <rect x="900" y="110" width="250" height="230" rx="14" fill="url(#cardGrad1)" stroke="#FBBF24" stroke-width="1.5" stroke-opacity="0.7" />
+    <rect x="915" y="125" width="160" height="24" rx="12" fill="#D97706" fill-opacity="0.3" stroke="#FBBF24" stroke-width="1" />
+    <text x="995" y="141" font-size="11" font-weight="700" fill="#FBBF24" text-anchor="middle">4. VECTOR STORE</text>
+
+    <!-- Cylinder Shape for Chroma -->
+    <g transform="translate(935, 175)">
+      <rect x="40" y="10" width="100" height="70" rx="8" fill="#1E293B" stroke="#F59E0B" stroke-width="1.5" />
+      <ellipse cx="90" cy="15" rx="50" ry="12" fill="#D97706" fill-opacity="0.5" stroke="#FBBF24" stroke-width="1.5" />
+      <ellipse cx="90" cy="80" rx="50" ry="12" fill="#1E293B" stroke="#F59E0B" stroke-width="1.5" />
+      <text x="90" y="52" font-size="16" font-weight="800" fill="#FBBF24" text-anchor="middle">ChromaDB</text>
+    </g>
+
+    <text x="1025" y="280" font-size="11.5" font-weight="700" fill="#F8FAFC" text-anchor="middle">Persistent Vector Index</text>
+    <text x="1025" y="298" font-size="10" fill="#94A3B8" text-anchor="middle">Indexed chunks stored locally in</text>
+    <text x="1025" y="312" font-size="10" fill="#FDE68A" font-family="monospace" text-anchor="middle">SmartMate/chroma-db/</text>
+  </g>
+
+  <!-- ==================== STAGE 5: RETRIEVAL & QA (LOWER ROW) ==================== -->
+
+  <!-- User Query Start Point -->
+  <g filter="url(#cardShadow)">
+    <rect x="40" y="430" width="220" height="200" rx="14" fill="url(#cardGrad1)" stroke="#38BDF8" stroke-width="1.5" stroke-opacity="0.6" />
+    <rect x="55" y="445" width="130" height="24" rx="12" fill="#0284C7" fill-opacity="0.3" stroke="#38BDF8" stroke-width="1" />
+    <text x="120" y="461" font-size="11" font-weight="700" fill="#38BDF8" text-anchor="middle">5. USER QUESTION</text>
+
+    <circle cx="150" cy="510" r="24" fill="#0284C7" fill-opacity="0.3" stroke="#38BDF8" stroke-width="1.5" />
+    <text x="150" y="517" font-size="22" text-anchor="middle">💬</text>
+
+    <text x="150" y="555" font-size="13" font-weight="700" fill="#F8FAFC" text-anchor="middle">Query Input</text>
+    <text x="150" y="578" font-size="10.5" fill="#94A3B8" text-anchor="middle">"What does the doc say</text>
+    <text x="150" y="594" font-size="10.5" fill="#94A3B8" text-anchor="middle">about Gradient Descent?"</text>
+  </g>
+
+  <!-- Arrow from Chroma to MMR Retriever (Down and Left) -->
+  <path d="M 1025,340 L 1025,400 L 460,400 L 460,430" fill="none" stroke="#FBBF24" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowAmber)" />
+
+  <!-- Arrow from User Question to MMR Retriever -->
+  <path d="M 260,530 L 325,530" fill="none" stroke="#38BDF8" stroke-width="2.5" marker-end="url(#arrowBlue)" />
+
+  <!-- MMR Retriever Node -->
+  <g filter="url(#cardShadow)">
+    <rect x="335" y="430" width="250" height="200" rx="14" fill="url(#cardGrad1)" stroke="#34D399" stroke-width="1.5" stroke-opacity="0.7" />
+    <rect x="350" y="445" width="160" height="24" rx="12" fill="#059669" fill-opacity="0.3" stroke="#34D399" stroke-width="1" />
+    <text x="430" y="461" font-size="11" font-weight="700" fill="#34D399" text-anchor="middle">6. MMR RETRIEVER</text>
+
+    <g transform="translate(350, 485)">
+      <rect x="0" y="0" width="220" height="70" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1" />
+      <text x="15" y="25" font-size="15">🎯</text>
+      <text x="45" y="21" font-size="12" font-weight="700" fill="#F1F5F9">Maximal Marginal Rel.</text>
+      <text x="45" y="37" font-size="10.5" fill="#A7F3D0">k = 4 top context chunks</text>
+      <text x="45" y="52" font-size="10.5" fill="#CBD5E1">fetch_k = 10, lambda = 0.5</text>
+    </g>
+    <text x="460" y="585" font-size="10.5" fill="#94A3B8" text-anchor="middle">Eliminates duplicate content</text>
+    <text x="460" y="602" font-size="10.5" fill="#34D399" text-anchor="middle">Extracts highest-signal context</text>
+  </g>
+
+  <!-- Arrow MMR -> LLM Generation -->
+  <path d="M 585,530 L 640,530" fill="none" stroke="#34D399" stroke-width="2.5" marker-end="url(#arrowGreen)" />
+
+  <!-- Prompt & LLM Node -->
+  <g filter="url(#cardShadow)">
+    <rect x="650" y="430" width="245" height="200" rx="14" fill="url(#cardGrad1)" stroke="#C084FC" stroke-width="1.5" stroke-opacity="0.7" />
+    <rect x="665" y="445" width="170" height="24" rx="12" fill="#7C3AED" fill-opacity="0.3" stroke="#C084FC" stroke-width="1" />
+    <text x="750" y="461" font-size="11" font-weight="700" fill="#C084FC" text-anchor="middle">7. PROMPT & GROQ LLM</text>
+
+    <g transform="translate(665, 485)">
+      <rect x="0" y="0" width="215" height="58" rx="8" fill="#1E293B" stroke="#475569" stroke-width="1" />
+      <text x="12" y="22" font-size="13">🔒</text>
+      <text x="35" y="19" font-size="11.5" font-weight="700" fill="#F1F5F9">Strict System Prompt</text>
+      <text x="35" y="34" font-size="10" fill="#94A3B8">"Use ONLY provided context,</text>
+      <text x="35" y="48" font-size="10" fill="#94A3B8">else say not in document"</text>
+    </g>
+
+    <g transform="translate(665, 553)">
+      <rect x="0" y="0" width="215" height="60" rx="8" fill="#1E293B" stroke="#7C3AED" stroke-width="1" />
+      <text x="12" y="25" font-size="15">⚡</text>
+      <text x="35" y="21" font-size="12" font-weight="700" fill="#F8FAFC">ChatGroq Engine</text>
+      <text x="35" y="37" font-size="10" fill="#C084FC">openai/gpt-oss-120b</text>
+      <text x="35" y="51" font-size="9.5" fill="#A78BFA">Ultra-low latency streaming</text>
+    </g>
+  </g>
+
+  <!-- Arrow LLM -> Output -->
+  <path d="M 895,530 L 950,530" fill="none" stroke="#F472B6" stroke-width="2.5" marker-end="url(#arrowPink)" />
+
+  <!-- Final Output Card -->
+  <g filter="url(#cardShadow)">
+    <rect x="960" y="430" width="200" height="200" rx="14" fill="url(#cardGrad1)" stroke="#F472B6" stroke-width="1.5" stroke-opacity="0.8" />
+    <rect x="975" y="445" width="150" height="24" rx="12" fill="#DB2777" fill-opacity="0.3" stroke="#F472B6" stroke-width="1" />
+    <text x="1050" y="461" font-size="11" font-weight="700" fill="#F472B6" text-anchor="middle">8. GROUNDED CHAT</text>
+
+    <circle cx="1060" cy="508" r="24" fill="#DB2777" fill-opacity="0.3" stroke="#F472B6" stroke-width="1.5" />
+    <text x="1060" y="515" font-size="22" text-anchor="middle">✨</text>
+
+    <text x="1060" y="552" font-size="13" font-weight="700" fill="#F8FAFC" text-anchor="middle">Streaming Answer</text>
+    <text x="1060" y="572" font-size="10.5" fill="#FBCFE8" text-anchor="middle">+ MMR Source Inspector</text>
+    <text x="1060" y="590" font-size="10.5" fill="#FBCFE8" text-anchor="middle">Full Context Transparency</text>
+    <text x="1060" y="608" font-size="10" fill="#F472B6" text-anchor="middle">Verified & Hallucination-Free</text>
+  </g>
+
+  <!-- Subtle connecting glow line from bottom to top -->
+  <path d="M 1060,430 L 1060,360 L 1120,360 L 1120,340" fill="none" stroke="#F472B6" stroke-width="1.5" stroke-dasharray="3,3" opacity="0.4" />
+</svg>
+

@@ -1,0 +1,27 @@
+# Virtual Environment
+.venv/
+venv/
+env/
+ENV/
+
+# Environment Variables & Secrets (CRITICAL)
+.env
+*.env
+
+# Python Cache & Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+
+# Local Vector Database & Storage
+chroma-db/
+test_db/
+test_run_db/
+*.sqlite3
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+desktop.ini

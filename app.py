@@ -175,7 +175,11 @@ with st.sidebar:
                     st.rerun()
 
         except Exception as e:
-            st.error(f"Error processing input: {str(e)}")
+            err_msg = str(e)
+            if "429" in err_msg or "RESOURCE_EXHAUSTED" in err_msg:
+                st.error("⏳ **Google Free Tier Rate Limit reached.** Google limits embeddings to 100 per minute on the free tier. Please wait 15–20 seconds and click Process again.")
+            else:
+                st.error(f"Error processing input: {err_msg}")
 
     st.markdown("---")
     

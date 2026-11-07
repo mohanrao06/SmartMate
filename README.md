@@ -8,7 +8,7 @@
 [![LangChain](https://img.shields.io/badge/LangChain-v0.3-1C3C3C?style=for-the-badge&logo=chainlink&logoColor=white)](https://www.langchain.com/)
 [![ChromaDB](https://img.shields.io/badge/ChromaDB-Vector_Store-E25A1C?style=for-the-badge)](https://www.trychroma.com/)
 [![Groq](https://img.shields.io/badge/Groq-Ultra_Fast_LLM-F55036?style=for-the-badge)](https://groq.com/)
-[![Gemini](https://img.shields.io/badge/Embeddings-Google_Gemini-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev/)
+[![HuggingFace](https://img.shields.io/badge/Embeddings-BAAI%2Fbge--small--en-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black)](https://huggingface.co/BAAI/bge-small-en-v1.5)
 
 <br/>
 
@@ -94,7 +94,7 @@ graph TD
 
     subgraph STAGE3 ["⚙️ STAGE 3: CHUNKING &amp; EMBEDDINGS"]
         C["✂️ RecursiveCharacterSplitter<br/><i>chunk_size: 1000 • overlap: 200</i>"]:::process
-        D["🧮 Google Gemini Embeddings<br/><i>models/gemini-embedding-001 (3072-dim)</i>"]:::process
+        D["🧮 HuggingFace Embeddings<br/><i>BAAI/bge-small-en-v1.5 (384-dim)</i>"]:::process
         E[("🗄️ Chroma Vector Database<br/><b>Persistent Local Vector Index</b>")]:::db
     end
 
@@ -178,7 +178,7 @@ SmartMate solves this with **Automatic Source Isolation**:
 ```text
 Frontend UI/UX  ───► Streamlit (Interactive Chat, Sidebar Ingestion, Context Viewers)
 RAG Orchestration ─► LangChain Community & Core
-Embedding Model ──► Google Gemini (models/gemini-embedding-001)
+Embedding Model ──► BAAI/bge-small-en-v1.5 (Local Hugging Face Embeddings)
 Vector Store    ───► ChromaDB (Local Persistent & Purge-Safe)
 LLM Provider    ───► Groq (High-Speed API)
 Document Parsers ──► PyPDF, BeautifulSoup4, WebBaseLoader

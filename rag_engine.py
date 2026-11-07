@@ -1,7 +1,5 @@
 import os
 import shutil
-import time
-import re
 import requests
 from typing import List, Tuple, Generator
 from bs4 import BeautifulSoup
@@ -15,7 +13,7 @@ os.environ["USER_AGENT"] = "SmartMate/1.0"
 from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import PyPDFLoader, WebBaseLoader
-from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import Chroma
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_groq import ChatGroq
@@ -25,57 +23,21 @@ load_dotenv(env_path)
 
 DEFAULT_DB_DIR = os.path.join(os.path.dirname(__file__), "chroma-db")
 
-class RateLimitedGoogleEmbeddings(GoogleGenerativeAIEmbeddings):
-    """
-    Enhanced Google Generative AI Embeddings with safe batching and automatic
-    retry handling for 429 RESOURCE_EXHAUSTED / free-tier rate limits.
-    """
-    def embed_documents(self, texts: list[str], **kwargs) -> list[list[float]]:
-        all_embeddings = []
-        batch_size = 40  # Safe batch size under Google's 100 free-tier RPM limit
-        
-        for i in range(0, len(texts), batch_size):
-            batch = texts[i:i + batch_size]
-            for attempt in range(6):
-                try:
-                    batch_embs = super().embed_documents(batch, **kwargs)
-                    all_embeddings.extend(batch_embs)
-                    if i + batch_size < len(texts):
-                        time.sleep(1.5)  # Grace pause between batches to avoid RPM burst
-                    break
-                except Exception as e:
-                    err_str = str(e)
-                    if "429" in err_str or "RESOURCE_EXHAUSTED" in err_str:
-                        match = re.search(r"retry in ([0-9\.]+)s", err_str)
-                        wait_sec = float(match.group(1)) + 1 if match else 13.0
-                        print(f"Google Free-Tier Rate Limit reached (100 RPM). Automatically waiting {wait_sec:.1f}s before retrying...")
-                        time.sleep(wait_sec)
-                    else:
-                        raise e
-        return all_embeddings
-
 # Singleton cached embedding model
 _EMBEDDING_MODEL = None
 
 def get_embedding_model():
     """
-    Returns Google Gemini embedding model with automatic 429 rate-limit handling.
-    Falls back to Mistral or HuggingFace if keys are missing.
+    Returns the reliable local HuggingFace embedding model (BAAI/bge-small-en-v1.5).
+    Runs 100% locally on your machine with zero rate limits, zero quota errors, and zero API costs.
+    Can embed large books, textbooks, and multi-page PDFs without any 429 errors.
     """
     global _EMBEDDING_MODEL
     if _EMBEDDING_MODEL is None:
-        google_key = os.getenv("GOOGLE_API_KEY")
-        if google_key:
-            _EMBEDDING_MODEL = RateLimitedGoogleEmbeddings(
-                model="models/gemini-embedding-001",
-                google_api_key=google_key
-            )
-        elif os.getenv("MISTRAL_API_KEY"):
-            from langchain_mistralai import MistralAIEmbeddings
-            _EMBEDDING_MODEL = MistralAIEmbeddings(model="mistral-embed")
-        else:
-            from langchain_huggingface import HuggingFaceEmbeddings
-            _EMBEDDING_MODEL = HuggingFaceEmbeddings(model_name="BAAI/bge-small-en-v1.5")
+        _EMBEDDING_MODEL = HuggingFaceEmbeddings(
+            model_name="BAAI/bge-small-en-v1.5",
+            encode_kwargs={"batch_size": 64}
+        )
     return _EMBEDDING_MODEL
 
 def clear_vector_store(persist_directory: str = DEFAULT_DB_DIR):
@@ -147,7 +109,7 @@ def build_vector_store(docs: List[Document], persist_directory: str = DEFAULT_DB
 
     # 2. Split into chunks using project configuration
     splitter = RecursiveCharacterTextSplitter(
-        chunk_size=1500,
+        chunk_size=1000,
         chunk_overlap=200
     )
     chunks = splitter.split_documents(docs)

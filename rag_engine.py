@@ -131,21 +131,47 @@ def get_retriever(vector_store: Chroma):
         }
     )
 
-def _build_prompt_and_context(query: str, vector_store: Chroma) -> Tuple[object, List[Document]]:
-    """Helper to retrieve MMR docs and construct the final prompt."""
+def generate_document_summary(docs: List[Document], model_name: str = "openai/gpt-oss-120b") -> str:
+    """Generates a concise 3-bullet executive summary of the newly ingested documents."""
+    try:
+        sample_text = "\n\n".join([d.page_content for d in docs[:4]])[:3500]
+        prompt = f"""You are an intelligent document analyst.
+Provide a clear, 3-bullet summary highlighting the core themes, objectives, and key takeaways from the following material:
+
+Document Excerpt:
+{sample_text}
+
+Executive Summary:"""
+        llm = ChatGroq(model=model_name, temperature=0.2)
+        resp = llm.invoke(prompt)
+        return resp.content
+    except Exception as e:
+        return f"Summary unavailable: {str(e)}"
+
+def _build_prompt_and_context(query: str, vector_store: Chroma, chat_history: List[dict] = None) -> Tuple[object, List[Document]]:
+    """Helper to retrieve MMR docs and construct the final prompt with conversational memory support."""
     retriever = get_retriever(vector_store)
     docs = retriever.invoke(query)
     
     context = "\n\n".join([doc.page_content for doc in docs])
     
-    prompt = ChatPromptTemplate.from_messages([
+    messages = [
         ("system",
             """You are a helpful AI assistant.
 Use ONLY the provided context to answer the question.
 If the answer is not present in the context,
 say: "I could not find the answer in the document."
 """
-        ),
+        )
+    ]
+    
+    # Add recent conversation turns for smooth follow-up questions
+    if chat_history:
+        for msg in chat_history[-4:]:
+            role = "human" if msg["role"] == "user" else "ai"
+            messages.append((role, msg["content"][:600]))
+
+    messages.append(
         ("human",
             """Context:
 {context}
@@ -154,24 +180,25 @@ Question:
 {question}
 """
         )
-    ])
+    )
     
+    prompt = ChatPromptTemplate.from_messages(messages)
     final_prompt = prompt.invoke({
         "context": context,
         "question": query
     })
     return final_prompt, docs
 
-def query_rag(query: str, vector_store: Chroma, model_name: str = "openai/gpt-oss-120b") -> Tuple[str, List[Document]]:
+def query_rag(query: str, vector_store: Chroma, model_name: str = "openai/gpt-oss-120b", chat_history: List[dict] = None) -> Tuple[str, List[Document]]:
     """Retrieves context using MMR and generates a complete answer using ChatGroq."""
-    final_prompt, docs = _build_prompt_and_context(query, vector_store)
+    final_prompt, docs = _build_prompt_and_context(query, vector_store, chat_history=chat_history)
     llm = ChatGroq(model=model_name, temperature=0)
     response = llm.invoke(final_prompt)
     return response.content, docs
 
-def stream_query_rag(query: str, vector_store: Chroma, model_name: str = "openai/gpt-oss-120b") -> Tuple[Generator[str, None, None], List[Document]]:
-    """Retrieves context using MMR and yields tokens for live streaming in the UI."""
-    final_prompt, docs = _build_prompt_and_context(query, vector_store)
+def stream_query_rag(query: str, vector_store: Chroma, model_name: str = "openai/gpt-oss-120b", chat_history: List[dict] = None) -> Tuple[Generator[str, None, None], List[Document]]:
+    """Retrieves context using MMR and yields tokens for live streaming in the UI with conversational memory."""
+    final_prompt, docs = _build_prompt_and_context(query, vector_store, chat_history=chat_history)
     llm = ChatGroq(model=model_name, temperature=0)
     
     def token_generator():

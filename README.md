@@ -246,15 +246,15 @@ Your browser will automatically open to:
 ```text
 SmartMate/
 ├── app.py                   # 🎨 Streamlit Web UI/UX & session management
-├── rag_engine.py            # 🧠 Core RAG pipeline (loaders, Chroma lifecycle, MMR, LLM)
-├── main.py                  # 💻 Original interactive CLI loop
-├── creatDB.py               # 🛠️ Standalone vector database creation script
-├── chroma-db/               # 📦 Local persistent Chroma storage (auto-purged on each upload)
-├── MachineLearningNotes.pdf # 📖 Sample document included for instant testing
+├── rag_engine.py            # 🧠 Core RAG engine (loaders, Chroma lifecycle, MMR, LLM)
+├── main.py                  # 💻 Interactive CLI interface for terminal chat
 ├── requirements.txt         # 📋 List of Python dependencies
-├── .env                     # 🔑 Secure environment variables and API keys
-├── .venv/                   # 🐍 Virtual environment with all installed libraries
-└── README.md                # 💖 This documentation file
+├── run_smartmate.bat        # ⚡ 1-Click Windows desktop launcher
+├── .env.example             # 🔑 Template for required API keys
+├── .gitignore               # 🛡️ Git protection rules (protects .env & storage)
+├── README.md                # 💖 Documentation & architecture guide
+└── assets/                  # 📊 Visual architecture assets
+    └── rag_workflow.svg
 ```
 
 ---

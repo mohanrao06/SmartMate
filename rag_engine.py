@@ -45,7 +45,10 @@ def clear_vector_store(persist_directory: str = DEFAULT_DB_DIR):
     Completely deletes and cleans up the existing vector store collection
     and files to save storage and ensure old embeddings are purged.
     """
-    if os.path.exists(persist_directory):
+    if not persist_directory:
+        persist_directory = DEFAULT_DB_DIR
+
+    if persist_directory and os.path.exists(persist_directory):
         try:
             emb = get_embedding_model()
             temp_db = Chroma(persist_directory=persist_directory, embedding_function=emb)
@@ -104,6 +107,9 @@ def build_vector_store(docs: List[Document], persist_directory: str = DEFAULT_DB
     Deletes any existing vector database, chunks the new documents,
     creates fresh embeddings, and saves into Chroma.
     """
+    if not persist_directory:
+        persist_directory = DEFAULT_DB_DIR
+
     # 1. Purge previous database
     clear_vector_store(persist_directory)
 

@@ -173,7 +173,7 @@ with st.sidebar:
                         docs = load_documents_from_file(tmp_path, original_filename=uploaded_file.name)
                         source_label = uploaded_file.name
                     finally:
-                        if os.path.exists(tmp_path):
+                        if tmp_path and os.path.exists(tmp_path):
                             os.remove(tmp_path)
                             
             elif input_type == "🌐 Website URL":
@@ -198,7 +198,7 @@ with st.sidebar:
                 progress_slot.progress(75)
                 status_slot.caption("🧮 Generating local embeddings (BAAI/bge-small-en-v1.5 - zero rate limits)...")
                 
-                vector_store, chunk_count = build_vector_store(docs, persist_directory=None)
+                vector_store, chunk_count = build_vector_store(docs)
                 
                 progress_slot.progress(100)
                 status_slot.caption("✨ Knowledge base ready!")

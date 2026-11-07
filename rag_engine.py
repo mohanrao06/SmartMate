@@ -13,7 +13,7 @@ os.environ["USER_AGENT"] = "SmartMate/1.0"
 from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import PyPDFLoader, WebBaseLoader
-from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_community.vectorstores import Chroma
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_groq import ChatGroq
@@ -27,10 +27,21 @@ DEFAULT_DB_DIR = os.path.join(os.path.dirname(__file__), "chroma-db")
 _EMBEDDING_MODEL = None
 
 def get_embedding_model():
-    """Returns the cached HuggingFace embedding model (BAAI/bge-small-en-v1.5)."""
+    """
+    Returns Google Gemini embedding model (gemini-embedding-001) for blazing-fast ~1s indexing.
+    Falls back to HuggingFace if GOOGLE_API_KEY is missing.
+    """
     global _EMBEDDING_MODEL
     if _EMBEDDING_MODEL is None:
-        _EMBEDDING_MODEL = HuggingFaceEmbeddings(model_name="BAAI/bge-small-en-v1.5")
+        google_key = os.getenv("GOOGLE_API_KEY")
+        if google_key:
+            _EMBEDDING_MODEL = GoogleGenerativeAIEmbeddings(
+                model="models/gemini-embedding-001",
+                google_api_key=google_key
+            )
+        else:
+            from langchain_huggingface import HuggingFaceEmbeddings
+            _EMBEDDING_MODEL = HuggingFaceEmbeddings(model_name="BAAI/bge-small-en-v1.5")
     return _EMBEDDING_MODEL
 
 def clear_vector_store(persist_directory: str = DEFAULT_DB_DIR):

@@ -181,8 +181,9 @@ with st.sidebar:
     
     # Model Configuration
     st.subheader("⚙️ Settings")
+    st.caption("⚡ **Embeddings**: Google Gemini (`gemini-embedding-001`)")
     model_choice = st.selectbox(
-        "Groq Model:",
+        "Chat LLM (Groq):",
         [
             "openai/gpt-oss-120b",
             "llama-3.3-70b-versatile",

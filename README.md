@@ -248,7 +248,6 @@ SmartMate/
 ├── app.py                   # 🎨 Streamlit Web UI/UX (File / URL / Text Ingestion + Chat)
 ├── rag_engine.py            # 🧠 Core RAG engine (loaders, Chroma lifecycle, MMR, LLM)
 ├── requirements.txt         # 📋 List of Python dependencies
-├── run_smartmate.bat        # ⚡ 1-Click Windows desktop launcher
 ├── .env.example             # 🔑 Template for required API keys
 ├── .gitignore               # 🛡️ Git protection rules (protects .env & storage)
 ├── README.md                # 💖 Documentation & architecture guide

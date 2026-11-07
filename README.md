@@ -245,9 +245,8 @@ Your browser will automatically open to:
 
 ```text
 SmartMate/
-├── app.py                   # 🎨 Streamlit Web UI/UX & session management
+├── app.py                   # 🎨 Streamlit Web UI/UX (File / URL / Text Ingestion + Chat)
 ├── rag_engine.py            # 🧠 Core RAG engine (loaders, Chroma lifecycle, MMR, LLM)
-├── main.py                  # 💻 Interactive CLI interface for terminal chat
 ├── requirements.txt         # 📋 List of Python dependencies
 ├── run_smartmate.bat        # ⚡ 1-Click Windows desktop launcher
 ├── .env.example             # 🔑 Template for required API keys

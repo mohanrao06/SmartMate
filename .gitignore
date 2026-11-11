@@ -26,3 +26,9 @@ test_run_db/
 Thumbs.db
 desktop.ini
 
+# Frontend Dependencies & Logs
+frontend/node_modules/
+frontend/.vite/
+*.log
+
+

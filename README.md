@@ -1,280 +1,161 @@
 <div align="center">
 
-# 🤖 SmartMate 💖
-### *Your Friendly, Multi-Source Conversational RAG Companion*
+# SmartMate
+### *Multi-Source Conversational RAG Platform*
 
 [![Python](https://img.shields.io/badge/Python-3.13-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-[![Streamlit](https://img.shields.io/badge/Streamlit-1.42+-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://streamlit.io/)
-[![LangChain](https://img.shields.io/badge/LangChain-v0.3-1C3C3C?style=for-the-badge&logo=chainlink&logoColor=white)](https://www.langchain.com/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-Backend_SSE-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![React](https://img.shields.io/badge/React-18_TypeScript-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
+[![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-Modern_UI-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![LangChain](https://img.shields.io/badge/LangChain-RAG_Pipeline-1C3C3C?style=for-the-badge&logo=chainlink&logoColor=white)](https://www.langchain.com/)
 [![ChromaDB](https://img.shields.io/badge/ChromaDB-Vector_Store-E25A1C?style=for-the-badge)](https://www.trychroma.com/)
 [![Groq](https://img.shields.io/badge/Groq-Ultra_Fast_LLM-F55036?style=for-the-badge)](https://groq.com/)
 [![HuggingFace](https://img.shields.io/badge/Embeddings-BAAI%2Fbge--small--en-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black)](https://huggingface.co/BAAI/bge-small-en-v1.5)
 
 <br/>
 
-> **"Upload anything you want — PDF, Web URL, or raw text — and immediately start having insightful, grounded conversations."** ✨
+> **"Upload PDFs, live website URLs, or notes — and hold strictly grounded, citation-verified conversations powered by local embeddings and ultra-fast streaming inference."**
 
 ---
 
 </div>
 
-## 🌸 Table of Contents
+## Table of Contents
 
-- [✨ What is SmartMate?](#-what-is-smartmate)
-- [🎯 Key Features](#-key-features)
-- [🧠 The RAG Workflow & Pipeline](#-the-rag-workflow--pipeline)
-- [🛡️ Storage-Safe Auto-Purge Engine](#️-storage-safe-auto-purge-engine)
-- [🛠️ Tech Stack](#️-tech-stack)
-- [🚀 Quick Start Guide](#-quick-start-guide)
-- [⚙️ Environment Configuration](#️-environment-configuration)
-- [📂 Project Structure](#-project-structure)
-- [💡 Example Use Cases](#-example-use-cases)
-- [🎀 Pro Tips & UI Guide](#-pro-tips--ui-guide)
+- [What is SmartMate?](#what-is-smartmate)
+- [Key Capabilities](#key-capabilities)
+- [The RAG Architecture](#the-rag-architecture)
+- [Storage-Safe Auto-Purge Engine](#storage-safe-auto-purge-engine)
+- [Tech Stack](#tech-stack)
+- [How to Run](#how-to-run)
+- [Environment Configuration](#environment-configuration)
+- [Project Structure](#project-structure)
 
 ---
 
-## ✨ What is SmartMate?
+## What is SmartMate?
 
-**SmartMate** is a modern, modular Retrieval-Augmented Generation (RAG) web application crafted for deep, accurate document chat.
+**SmartMate** is a full-stack Retrieval-Augmented Generation (RAG) web application engineered with a **FastAPI + SSE backend** and an **industry-grade React + TypeScript + Tailwind CSS interface**.
 
-Whether you have a **dense research PDF**, a **fascinating tech blog article**, or **quick meeting notes pasted directly into the app**, SmartMate instantly ingests, chunks, embeds, and indexes your material so you can ask anything and receive precise, strictly-grounded answers powered by ultra-fast LLMs.
+Whether analyzing a dense multi-hundred-page textbook PDF, a technical web article, or pasted meeting notes, SmartMate parses, chunks, embeds locally with zero API rate limits, indexes into ChromaDB, generates an executive summary, and streams citation-linked Markdown answers in real time.
 
 ---
 
-## 🎯 Key Features
+## Key Capabilities
 
 | Feature | Description |
 | :--- | :--- |
-| **📄 Multi-Format File Ingestion** | Upload any `.pdf` or `.txt` file effortlessly with drag-and-drop support. |
-| **🌐 Live Web Page Scraping** | Provide any public website or article URL to fetch, clean, and chat with online knowledge. |
-| **✍️ Direct Text Scratchpad** | Paste raw snippets, meeting minutes, or code notes directly into the UI without creating files. |
-| **🧹 Storage-Safe Auto-Purge** | Ingesting a new source **automatically wipes old embeddings and vector store files** from disk and memory to prevent topic bleed and conserve storage! |
-| **🎯 High-Precision MMR Retrieval** | Uses **Maximal Marginal Relevance (MMR)** (`k=4`, `fetch_k=10`, `lambda_mult=0.5`) to eliminate redundancy and return diverse, high-signal context chunks. |
-| **🔒 Strictly Grounded Answers** | Governed by an intelligent prompt template: answers strictly using verified context, or honestly says *"I could not find the answer in the document."* |
-| **🔍 Transparent Context Inspector** | Every response includes an expandable **"View Retrieved MMR Context"** viewer, letting you see the exact chunks and source metadata behind every answer. |
-| **⚡ Ultra-Low Latency Inference** | Powered by **Groq** (`openai/gpt-oss-120b`, `llama-3.3-70b-versatile`, `mixtral-8x7b-32768`) for near-instant responses. |
+| **Multi-Source Drag & Drop** | Upload `.pdf`, `.txt`, or `.md` files via drag-and-drop, fetch live website URLs (`WebBaseLoader` + `BeautifulSoup`), or paste direct notes. |
+| **Granular SSE Progress** | Real-time multi-stage ingestion pipeline tracking extraction, prior index purge, chunking, batched local embedding progress, and summary generation. |
+| **Storage-Safe Auto-Purge** | Loading a new source automatically deletes prior ChromaDB collections and disk files to eliminate topic bleed and save storage. |
+| **100% Local Zero-Quota Embeddings** | Runs `BAAI/bge-small-en-v1.5` locally on your machine — handles large books and PDFs with zero 429 rate-limit errors or embedding costs. |
+| **Interactive Inline Citations** | Answers include clickable `[Chunk N]` pills that open the right **Retrieved Context Drawer** directly to the supporting passage and page number. |
+| **Full Vector Chunk Inspector** | Dedicated Inspector tab with source telemetry, live keyword search across all indexed chunks, pagination, and one-click copy. |
+| **Light & Dark Workspace** | Minimalist modern UI with persistent Light/Dark mode, stoppable SSE token streaming, configurable MMR depth (`k=2..8`), and Markdown chat export. |
 
 ---
 
-## 🧠 The RAG Workflow & Pipeline
+## The RAG Architecture
 
 <div align="center">
 
 <img src="assets/rag_workflow.svg" alt="SmartMate RAG Workflow" width="100%" style="border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.3); margin-bottom: 20px;" />
 
-*Figure 1: SmartMate End-to-End System Diagram — Multi-Source Ingestion, Storage-Safe Purge, MMR Vector Search & ChatGroq Streaming*
+*SmartMate End-to-End Pipeline: Multi-Source Ingestion, Auto-Purge, Local BGE Indexing, MMR Retrieval & Groq SSE Streaming*
 
 </div>
 
-<br/>
+---
 
-### 📦 Interactive Workflow Graph (Boxes & Arrows)
+## Storage-Safe Auto-Purge Engine
 
-```mermaid
-graph TD
-    %% Custom Styling Definitions
-    classDef source fill:#0F172A,stroke:#38BDF8,stroke-width:2.5px,color:#F8FAFC,font-weight:bold;
-    classDef purge fill:#0F172A,stroke:#FB7185,stroke-width:2.5px,color:#F8FAFC,font-weight:bold;
-    classDef process fill:#0F172A,stroke:#C084FC,stroke-width:2.5px,color:#F8FAFC,font-weight:bold;
-    classDef db fill:#0F172A,stroke:#FBBF24,stroke-width:3px,color:#FDE68A,font-weight:bold;
-    classDef query fill:#0F172A,stroke:#38BDF8,stroke-width:2.5px,color:#F8FAFC,font-weight:bold;
-    classDef retriever fill:#0F172A,stroke:#34D399,stroke-width:2.5px,color:#F8FAFC,font-weight:bold;
-    classDef llm fill:#0F172A,stroke:#C084FC,stroke-width:2.5px,color:#F8FAFC,font-weight:bold;
-    classDef output fill:#0F172A,stroke:#F472B6,stroke-width:3px,color:#F8FAFC,font-weight:bold;
+SmartMate enforces **Automatic Source Isolation**:
+1. Before indexing a new upload, URL, or note, `clear_vector_store()` releases active handles, removes the existing Chroma collection, and cleans up `chroma-db/` on disk.
+2. Conversation history resets cleanly per unique `source_id`, preventing answers from leaking context across unrelated files.
+3. You can also manually purge the active vector index from the sidebar at any time.
 
-    subgraph STAGE1 ["📥 STAGE 1: MULTI-SOURCE INGESTION"]
-        A1["📄 PDF / TXT File<br/><i>PyPDFLoader</i>"]:::source
-        A2["🌐 Website URL<br/><i>WebBaseLoader + BeautifulSoup</i>"]:::source
-        A3["✍️ Raw Text Notes<br/><i>Direct Document Wrapper</i>"]:::source
-    end
+---
 
-    subgraph STAGE2 ["🛡️ STAGE 2: STORAGE-SAFE AUTO-PURGE"]
-        B["🧹 Auto-Purge Gate<br/><b>Wipes Old Chroma DB &amp; Resets Chat</b><br/><i>Zero Topic Bleed • Conserves Disk</i>"]:::purge
-    end
-
-    subgraph STAGE3 ["⚙️ STAGE 3: CHUNKING &amp; EMBEDDINGS"]
-        C["✂️ RecursiveCharacterSplitter<br/><i>chunk_size: 1000 • overlap: 200</i>"]:::process
-        D["🧮 HuggingFace Embeddings<br/><i>BAAI/bge-small-en-v1.5 (384-dim)</i>"]:::process
-        E[("🗄️ Chroma Vector Database<br/><b>Persistent Local Vector Index</b>")]:::db
-    end
-
-    subgraph STAGE4 ["💬 STAGE 4: USER QUERY &amp; MMR RETRIEVAL"]
-        F(["👤 User Question<br/><i>'What does the document say about...'</i>"]):::query
-        G["🎯 MMR Retriever<br/><i>k: 4 • fetch_k: 10 • λ: 0.5</i>"]:::retriever
-        H["📚 Top 4 Diverse Context Chunks<br/><i>Maximal Marginal Relevance</i>"]:::retriever
-    end
-
-    subgraph STAGE5 ["⚡ STAGE 5: GROUNDED LLM GENERATION"]
-        I["🔒 Strict Grounding Prompt<br/><i>'Use ONLY context or say not found'</i>"]:::llm
-        J["🤖 ChatGroq Engine<br/><i>openai/gpt-oss-120b</i>"]:::llm
-        K(["✨ Streamed Grounded Answer<br/><b>+ Transparent MMR Context Inspector</b>"]):::output
-    end
-
-    %% Pipeline Flow Connections
-    A1 -->|Raw Document| B
-    A2 -->|Scraped Content| B
-    A3 -->|Pasted Text| B
-    
-    B -->|Purged & Clean| C
-    C -->|Document Chunks| D
-    D -->|Dense Embeddings| E
-
-    F -->|Natural Language Query| G
-    E -. "Vector Similarity Search" .-> G
-    G -->|Top 4 Chunks| H
-    H -->|Extracted Context| I
-    F -. "Original Query" .-> I
-    I -->|Formatted Prompt| J
-    J -->|Real-time Token Stream| K
-```
-
-<br/>
-
-### 📐 Visual ASCII Blueprint
+## Tech Stack
 
 ```text
-┌────────────────────────────────────────────────────────────────────────────────────────┐
-│                              🧠 SMARTMATE RAG ARCHITECTURE                             │
-└────────────────────────────────────────────────────────────────────────────────────────┘
-
-  [STAGE 1: INPUT]                 [STAGE 2: PURGE]                  [STAGE 3: INDEXING]
- ┌──────────────────────┐        ┌───────────────────────┐        ┌───────────────────────┐
- │ 📄 PDF / TXT File    │        │  🛡️ Auto-Purge Gate   │        │ ✂️ Splitter (1000/200)│
- │ 🌐 Website URL       │ ─────► │  • Delete Old Chroma  │ ─────► │ 🧮 BGE Embeddings     │
- │ ✍️ Raw Text Notes    │        │  • Reset Chat History │        │ 🗄️ Chroma Vector DB   │
- └──────────────────────┘        └───────────────────────┘        └───────────┬───────────┘
-                                                                              │
- ─────────────────────────────────────────────────────────────────────────────┼───────────
-                                                                              │
-  [STAGE 4: QUERY]                 [STAGE 5: MMR RETRIEVAL]          [STAGE 6: GENERATION]
- ┌──────────────────────┐        ┌───────────────────────┐        ┌───────────▼───────────┐
- │ 👤 User Question     │        │ 🎯 MMR Retriever      │        │ 🔒 Strict Prompt      │
- │  "Ask anything..."   │ ─────► │  • k=4, fetch_k=10    │ ─────► │ ⚡ ChatGroq LLM       │
- │                      │        │  • lambda=0.5         │        │ ✨ Grounded Answer    │
- └──────────────────────┘        └───────────────────────┘        └───────────────────────┘
+Frontend SPA      ───► React 18, TypeScript, Vite, Tailwind CSS, Lucide Icons, React-Markdown
+Backend Server    ───► FastAPI, Uvicorn (REST + Server-Sent Events Streaming)
+RAG Orchestration ───► LangChain Core, Community & Text Splitters
+Embedding Engine  ───► BAAI/bge-small-en-v1.5 (100% Local HuggingFace Embeddings)
+Vector Store      ───► ChromaDB (Persistent Local Vector Index)
+LLM Inference     ───► Groq Cloud (GPT-OSS 120B, Llama 3.3 70B, Llama 3.1 8B Instant)
+Document Parsers  ───► PyPDF, WebBaseLoader, BeautifulSoup4
 ```
 
 ---
 
-## 🛡️ Storage-Safe Auto-Purge Engine
-
-> [!IMPORTANT]
-> **Why Auto-Purge?**
-> In traditional RAG setups, uploading multiple documents continuously appends embeddings to the same database. This leads to:
-> 1. **Topic Contamination**: Answering questions with fragments from older, unrelated uploads.
-> 2. **Disk Bloat**: Vector store folders quickly taking hundreds of megabytes on disk.
-> 3. **Memory Pressure**: Unnecessary embedding caches staying active.
-
-SmartMate solves this with **Automatic Source Isolation**:
-- Whenever you upload a new file, URL, or text, SmartMate invokes `clear_vector_store()`.
-- It deletes the previous Chroma collection and wipes the temporary disk storage.
-- It refreshes your conversation history so your chat starts clean and focused exclusively on the new topic.
-- You can also hit **"🗑️ Delete Current Knowledge Base"** in the sidebar whenever you want to wipe memory manually!
-
----
-
-## 🛠️ Tech Stack
-
-```text
-Frontend UI/UX  ───► Streamlit (Interactive Chat, Sidebar Ingestion, Context Viewers)
-RAG Orchestration ─► LangChain Community & Core
-Embedding Model ──► BAAI/bge-small-en-v1.5 (Local Hugging Face Embeddings)
-Vector Store    ───► ChromaDB (Local Persistent & Purge-Safe)
-LLM Provider    ───► Groq (High-Speed API)
-Document Parsers ──► PyPDF, BeautifulSoup4, WebBaseLoader
-Language        ───► Python 3.13
-Environment     ───► UV / Virtualenv (.venv)
-```
-
----
-
-## 🚀 Quick Start Guide
+## How to Run
 
 ### 1. Prerequisites
+* **Python 3.11+** (configured in `.venv`)
+* *(Optional for modifying UI source)* **Node.js 18+ / npm** (production frontend bundle is already pre-built inside `frontend/dist`)
 
-Ensure you have **Python 3.13+** installed on your system.
-
-### 2. Navigate to SmartMate
-
-Open your terminal (PowerShell or Command Prompt) and switch to the project folder:
-
-```powershell
-cd C:\Users\gedal\Desktop\AI\RAG\SmartMate
-```
-
-### 3. Configure Your `.env` File
-
-Create or verify the `.env` file inside the `SmartMate/` directory with your Groq API key:
+### 2. Configure `.env`
+Ensure `SmartMate/.env` contains your Groq API key:
 
 ```env
 GROQ_API_KEY="your_groq_api_key_here"
 ```
 
-*(Optional: You can also specify `MISTRAL_API_KEY`, `OPENAI_API_KEY`, or `GOOGLE_API_KEY` if you wish to use alternative providers.)*
-
-### 4. Run the Streamlit Application
-
-Launch SmartMate directly using the project's virtual environment:
+### 3. Start the Application (Single Command)
+From inside `C:\Users\gedal\Desktop\AI\RAG\SmartMate`:
 
 ```powershell
-.venv\Scripts\streamlit run app.py
+.venv\Scripts\python.exe server.py
 ```
 
-*Or via python:*
+Open your browser to:
+**`http://127.0.0.1:8000`**
 
+### 4. Frontend Development Mode (Optional)
+If you want hot-reloading while editing files in `frontend/src/`:
+
+Terminal 1 (Backend API):
 ```powershell
-.venv\Scripts\python -m streamlit run app.py
+.venv\Scripts\python.exe server.py
 ```
 
-Your browser will automatically open to:
-👉 **`http://localhost:8501`** 🎉
+Terminal 2 (Vite Dev Server on port 5173):
+```powershell
+cd frontend
+npm run dev
+```
+
+When done editing, run `npm run build` inside `frontend/` to update the production bundle served by `server.py`.
 
 ---
 
-## ⚙️ Environment Configuration
+## Environment Configuration
 
 | Variable | Required | Description |
 | :--- | :---: | :--- |
-| `GROQ_API_KEY` | **Yes** | Your API key from [Groq Console](https://console.groq.com/) for ultra-fast generation. |
-| `TRANSFORMERS_OFFLINE` | Auto | Set to `1` by `rag_engine.py` to prevent unnecessary model re-downloads. |
-| `HF_HUB_OFFLINE` | Auto | Set to `1` by `rag_engine.py` for rapid, offline embedding loading. |
+| `GROQ_API_KEY` | **Yes** | Your API key from [Groq Console](https://console.groq.com/) for fast chat inference and summaries. |
+| `TRANSFORMERS_OFFLINE` | Auto | Enabled by `rag_engine.py` for instant local cached embedding startup. |
+| `HF_HUB_OFFLINE` | Auto | Enabled by `rag_engine.py` to avoid HuggingFace Hub lookup delays. |
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```text
 SmartMate/
-├── app.py                   # 🎨 Streamlit Web UI/UX (File / URL / Text Ingestion + Chat)
-├── rag_engine.py            # 🧠 Core RAG engine (loaders, Chroma lifecycle, MMR, LLM)
-├── requirements.txt         # 📋 List of Python dependencies
-├── .env.example             # 🔑 Template for required API keys
-├── .gitignore               # 🛡️ Git protection rules (protects .env & storage)
-├── README.md                # 💖 Documentation & architecture guide
-└── assets/                  # 📊 Visual architecture assets
-    └── rag_workflow.svg
+├── server.py               # FastAPI server (REST + SSE streams + serves React SPA)
+├── rag_engine.py           # Core RAG engine (loaders, auto-purge, local BGE, MMR, Groq)
+├── frontend/               # React + TypeScript + Vite + Tailwind CSS v2 UI
+│   ├── index.html
+│   ├── package.json
+│   ├── src/                # Modular UI components, API client & types
+│   └── dist/               # Production static SPA served by FastAPI
+├── requirements.txt        # Python backend & RAG dependencies
+├── .env.example            # API key environment template
+├── .gitignore              # Protects .env, .venv, node_modules & chroma-db
+├── README.md               # Documentation
+└── assets/
+    └── rag_workflow.svg    # Architecture diagram
 ```
-
----
-
-## 💡 Example Use Cases
-
-- 📚 **Study & Exam Preparation**: Upload class notes or textbook chapters (`.pdf`) and ask SmartMate to explain complex theorems, generate quiz questions, or summarize key takeaways.
-- 📰 **Tech Article & Blog Digest**: Paste a link to a long technical article or documentation page and ask: *"What are the 3 main takeaways and trade-offs mentioned?"*
-- 📝 **Meeting Summaries**: Paste raw meeting transcripts or project briefs into the **Raw Text** tab and chat directly with action items, deadlines, and responsibilities.
-
----
-
-## 🎀 Pro Tips & UI Guide
-
-- **Verify Your Context**: Check the **"📚 View Retrieved MMR Context"** expander beneath each answer to inspect the exact document passages SmartMate relied on.
-- **Switch Models on the Fly**: Use the **⚙️ Settings** dropdown in the sidebar to switch between `openai/gpt-oss-120b`, `llama-3.3-70b-versatile`, or `mixtral-8x7b-32768`.
-- **Clean Slate Anytime**: Hit the red **"🗑️ Delete Current Knowledge Base"** button whenever you want to wipe memory completely and start fresh.
-
----
-
-<div align="center">
-
-Made with 💖 by **SmartMate Team** • Built with **LangChain & Streamlit**
-
-</div>

@@ -2,58 +2,32 @@
 langchain
 langchain-core
 langchain-community
+langchain-text-splitters
 
 # LLM Providers
-langchain-openai
 langchain-groq
+langchain-openai
 langchain-google-genai
 langchain-mistralai
 
-# Environment variables
+# Environment variables & utilities
 python-dotenv
-
-# Common utilities
 pydantic
 requests
+tqdm
 
-
-# Vector Database
-
+# Vector Database & Local Embeddings
 chromadb
 langchain-huggingface
 sentence-transformers
 
-# Embedding Models
-
-sentence-transformers
-
-# Document Loaders dependencies
-
+# Document Loaders
 pypdf
 unstructured
 beautifulsoup4
 lxml
 
-
-# Text Processing
-
-tiktoken
-
-# Data Handling
-
-pandas
-numpy
-
-# API / App Layer (optional but common in RAG apps)
-
+# Backend API & Web Server
 fastapi
 uvicorn
-
-# UI (optional)
-
-streamlit
-
-# Utilities
-
-tqdm
-requests
+python-multipart

@@ -59,7 +59,7 @@ Whether analyzing a dense multi-hundred-page textbook PDF, a technical web artic
 
 <div align="center">
 
-<img src="./assets/rag_workflow.svg" alt="SmartMate RAG Workflow" width="100%" />
+<img src="./assets/rag_workflow.png" alt="SmartMate RAG Workflow" width="100%" />
 
 *SmartMate End-to-End Pipeline: Multi-Source Ingestion, Auto-Purge, Local BGE Indexing, MMR Retrieval & Groq SSE Streaming*
 
